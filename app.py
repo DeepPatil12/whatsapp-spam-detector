@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import joblib
+import os
 
 app = Flask(__name__)
 
@@ -24,4 +25,5 @@ def predict():
     return jsonify({"message": message, "prediction": "spam" if prediction == 1 else "ham"})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))  # Get port from environment variable
+    app.run(host="0.0.0.0", port=port, debug=True)  # Ensure app runs on the right port
