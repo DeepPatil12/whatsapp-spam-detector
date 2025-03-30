@@ -1,12 +1,15 @@
 from flask import Flask, request, jsonify
 import joblib
-import os
 
 app = Flask(__name__)
 
 # Load the trained model and vectorizer
 classifier = joblib.load("spam_classifier.pkl")
 vectorizer = joblib.load("tfidf_vectorizer.pkl")
+
+@app.route("/")  # New route for the homepage
+def home():
+    return jsonify({"message": "Spam Detection API is running!"})
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -25,5 +28,4 @@ def predict():
     return jsonify({"message": message, "prediction": "spam" if prediction == 1 else "ham"})
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Get port from environment variable
-    app.run(host="0.0.0.0", port=port, debug=True)  # Ensure app runs on the right port
+    app.run(host="0.0.0.0", port=10000, debug=True)
